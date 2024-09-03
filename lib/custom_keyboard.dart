@@ -53,6 +53,10 @@ class CustomKeyboardDemoState extends State<CustomKeyboardDemo> {
               TextField(
                 decoration: InputDecoration(labelText: '多个键盘演示'),
                 keyboardType: BoardTypeUtil.cardNumberType,
+              ),
+              TextField(
+                decoration: InputDecoration(labelText: '手机号键盘'),
+                keyboardType: BoardTypeUtil.phoneType,
               )
             ],
           ));

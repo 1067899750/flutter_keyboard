@@ -33,6 +33,8 @@ part 'keyboard_root.dart';
 
 part 'board/card_number_keyboard.dart';
 
-part 'board/board_card_widget.dart';
+part 'widget/board_card_widget.dart';
 
-part 'board/board_btn_widget.dart';
+part 'widget/board_btn_widget.dart';
+
+part 'board/phone_keyboard.dart';

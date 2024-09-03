@@ -1,12 +1,15 @@
 part of cool_ui;
 
-class CardNumberKeyboard extends StatelessWidget {
+///
+/// 手机号输入键盘
+///
+class PhoneKeyboard extends StatelessWidget {
   final KeyboardController controller;
 
-  const CardNumberKeyboard({super.key, required this.controller});
+  const PhoneKeyboard({super.key, required this.controller});
 
   ///
-  /// {0 ~ 9, X} 类型按键
+  /// {0 ~ 9} 类型按键
   ///
   Widget buildButton(String title, double width, double height,
       {String? value}) {
@@ -79,8 +82,16 @@ class CardNumberKeyboard extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      buildButton('X', childWidth, childHeight),
+                      // 清除按键
+                      BoardBtnWidget(
+                        width: childWidth,
+                        height: childHeight,
+                        title: '清除',
+                        controller: controller,
+                        btnType: BtnType.clearType,
+                      ),
                       buildButton('0', childWidth, childHeight),
+                      // 删除按键
                       Container(
                         width: childWidth,
                         height: childHeight,

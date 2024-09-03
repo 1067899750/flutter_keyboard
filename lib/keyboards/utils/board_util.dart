@@ -10,10 +10,15 @@ class BoardTypeUtil {
   static CKTextInputType cardNumberType =
       const CKTextInputType(name: 'CardNumberKeyboard');
 
+  // 手机号键盘
+  static CKTextInputType phoneType =
+      const CKTextInputType(name: 'PhoneKeyboard');
+
   // 获取所有键盘类型
   static Map<BoardType, CKTextInputType> getAllBoardType() {
     return {
       BoardType.cardNumberType: cardNumberType,
+      BoardType.phoneType: phoneType,
     };
   }
 }
@@ -37,11 +42,9 @@ class BoardUtil {
                 case BoardType.cardNumberType:
                   return CardNumberKeyboard(controller: controller);
                 case BoardType.phoneType:
-                  return CardNumberKeyboard(controller: controller);
-                  break;
+                  return PhoneKeyboard(controller: controller);
                 case BoardType.otherType:
                   return CardNumberKeyboard(controller: controller);
-                  break;
               }
             },
             getHeight: ScreenUtil.getBoardHeight),

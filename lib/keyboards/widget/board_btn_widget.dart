@@ -16,6 +16,9 @@ class BoardBtnWidget extends StatefulWidget {
   final String? value;
   final KeyboardController controller;
 
+  /// 按键类型
+  final BtnType btnType;
+
   const BoardBtnWidget({
     super.key,
     required this.width,
@@ -23,6 +26,7 @@ class BoardBtnWidget extends StatefulWidget {
     required this.title,
     this.value,
     required this.controller,
+    required this.btnType,
   });
 
   @override
@@ -59,13 +63,21 @@ class _BoardBtnWidgetState extends State<BoardBtnWidget> {
             ),
           ),
         ),
-        onTapDown: (TapDownDetails details){
-          widget.controller.addText(widget.value ?? widget.title);
+        onTapDown: (TapDownDetails details) {
+          switch (widget.btnType) {
+            case BtnType.numAndWordType:
+              widget.controller.addText(widget.value ?? widget.title);
+              break;
+            case BtnType.clearType:
+              widget.controller.clear();
+              break;
+          }
+
           setState(() {
             _isSelect = true;
           });
         },
-        onTapUp: (TapUpDetails details){
+        onTapUp: (TapUpDetails details) {
           setState(() {
             _isSelect = false;
           });
@@ -73,4 +85,16 @@ class _BoardBtnWidgetState extends State<BoardBtnWidget> {
       ),
     );
   }
+}
+
+///
+///
+/// 按键类型
+///
+///
+enum BtnType {
+  // 清除按键
+  clearType,
+  // 数字和字母按键
+  numAndWordType
 }

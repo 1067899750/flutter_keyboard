@@ -347,6 +347,9 @@ class InputClient {
   }
 }
 
+///
+/// 自定义文本输入类型
+///
 class CKTextInputType extends TextInputType {
   final String name;
   final String? params;

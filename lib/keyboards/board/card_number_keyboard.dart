@@ -5,76 +5,111 @@ class CardNumberKeyboard extends StatelessWidget {
 
   const CardNumberKeyboard({super.key, required this.controller});
 
-  @override
-  Widget build(BuildContext context) {
-    MediaQueryData mediaQuery = MediaQuery.of(context);
-    return Material(
-      child: DefaultTextStyle(
-          style: const TextStyle(
-              fontWeight: FontWeight.w500, color: Colors.black, fontSize: 23.0),
-          child: Container(
-            height: ScreenUtil.getBoardHeight(context),
-            width: mediaQuery.size.width,
-            decoration: const BoxDecoration(
-              color: Color(0xffafafaf),
-            ),
-            child: GridView.count(
-                childAspectRatio: 2 / 1,
-                mainAxisSpacing: 0.5,
-                crossAxisSpacing: 0.5,
-                padding: const EdgeInsets.all(0.0),
-                crossAxisCount: 3,
-                children: <Widget>[
-                  buildButton('1'),
-                  buildButton('2'),
-                  buildButton('3'),
-                  buildButton('4'),
-                  buildButton('5'),
-                  buildButton('6'),
-                  buildButton('7'),
-                  buildButton('8'),
-                  buildButton('9'),
-                  Container(
-                    color: const Color(0xFFd3d6dd),
-                    child: GestureDetector(
-                      behavior: HitTestBehavior.translucent,
-                      child: const Center(
-                        child: Icon(Icons.expand_more),
-                      ),
-                      onTap: () {
-                        controller.doneAction();
-                      },
-                    ),
-                  ),
-                  buildButton('0'),
-                  Container(
-                    color: const Color(0xFFd3d6dd),
-                    child: GestureDetector(
-                      behavior: HitTestBehavior.translucent,
-                      child: const Center(
-                        child: Text('X'),
-                      ),
-                      onTap: () {
-                        controller.deleteOne();
-                      },
-                    ),
-                  ),
-                ]),
-          )),
+  ///
+  /// {0 ~ 9, X} 类型按键
+  ///
+  Widget buildButton(String title, double width, double height,
+      {String? value}) {
+    return BoardBtnWidget(
+      width: width,
+      height: height,
+      title: title,
+      controller: controller,
+      value: value,
     );
   }
 
-  Widget buildButton(String title, {String? value}) {
-    return Container(
-      color: Colors.white,
-      child: GestureDetector(
-        behavior: HitTestBehavior.translucent,
-        child: Center(
-          child: Text(title),
+  @override
+  Widget build(BuildContext context) {
+    MediaQueryData mediaQuery = MediaQuery.of(context);
+    double widgetWidth = mediaQuery.size.width;
+    // 子组件的宽度
+    double childWidth = (widgetWidth - 40) / 3;
+    return Material(
+      child: DefaultTextStyle(
+        style: const TextStyle(
+          fontWeight: FontWeight.w500,
+          color: Colors.black,
+          fontSize: 23.0,
         ),
-        onTap: () {
-          controller.addText(value ?? title);
-        },
+        child: BoardCardWidget(
+          height: ScreenUtil.getBoardHeight(context),
+          width: widgetWidth,
+          controller: controller,
+          child: LayoutBuilder(
+              builder: (BuildContext context, BoxConstraints constraints) {
+            double height = constraints.constrainHeight();
+            double childHeight = (height - 30) / 4;
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    buildButton('1', childWidth, childHeight),
+                    buildButton('2', childWidth, childHeight),
+                    buildButton('3', childWidth, childHeight),
+                  ],
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 10.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      buildButton('4', childWidth, childHeight),
+                      buildButton('5', childWidth, childHeight),
+                      buildButton('6', childWidth, childHeight),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 10.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      buildButton('7', childWidth, childHeight),
+                      buildButton('8', childWidth, childHeight),
+                      buildButton('9', childWidth, childHeight),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 10.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      buildButton('X', childWidth, childHeight),
+                      buildButton('0', childWidth, childHeight),
+                      Container(
+                        width: childWidth,
+                        height: childHeight,
+                        decoration: BoxDecoration(
+                          color: const Color(0xFF1c69ac),
+                          borderRadius: BorderRadius.circular(5.0),
+                        ),
+                        child: GestureDetector(
+                          behavior: HitTestBehavior.translucent,
+                          child: const Center(
+                            child: Image(
+                              image: AssetImage(
+                                  'assets/images/icon_shuzi_keyboard_del_default.png'),
+                              width: 30,
+                              height: 20,
+                              fit: BoxFit.fill,
+                            ),
+                          ),
+                          onTap: () {
+                            controller.deleteOne();
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                )
+              ],
+            );
+          }),
+        ),
       ),
     );
   }

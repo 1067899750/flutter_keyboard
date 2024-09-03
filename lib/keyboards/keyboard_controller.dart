@@ -78,7 +78,10 @@ class KeyboardController extends ValueNotifier<TextEditingValue>{
   clearComposing() {
     value = value.copyWith(composing: TextRange.empty);
   }
+
+  ///
   ///删除一个字符,一般用于键盘的删除键
+  ///
   deleteOne(){
     if(selection.baseOffset == 0) {
       return;
@@ -104,7 +107,9 @@ class KeyboardController extends ValueNotifier<TextEditingValue>{
     }
   }
 
+  ///
   /// 在光标位置添加文字,一般用于键盘输入
+  ///
   addText(String insertText){
     String newText = selection.textBefore(text) + insertText + selection.textAfter(text);
     value = TextEditingValue(
@@ -115,22 +120,30 @@ class KeyboardController extends ValueNotifier<TextEditingValue>{
     );
   }
 
+  ///
   /// 完成
+  ///
   doneAction(){
     CoolKeyboard.sendPerformAction(TextInputAction.done);
   }
 
+  ///
   /// 下一个
+  ///
   nextAction(){
     CoolKeyboard.sendPerformAction(TextInputAction.next);
   }
 
+  ///
   /// 换行
+  ///
   newLineAction(){
     CoolKeyboard.sendPerformAction(TextInputAction.newline);
   }
 
+  ///
   ///发送其他Action
+  ///
   sendPerformAction(TextInputAction action){
     CoolKeyboard.sendPerformAction(action);
   }

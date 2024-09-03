@@ -188,13 +188,11 @@ class ScreenUtil {
         _designW;
   }
 
-
   ///
   /// 键盘高度
   ///
   static double getBoardHeight(BuildContext ctx) {
     MediaQueryData mediaQuery = MediaQuery.of(ctx);
-    return mediaQuery.size.width / 3 / 2 * 4;
+    return mediaQuery.size.width / 3 / 2 * 4 + 30;
   }
-
 }

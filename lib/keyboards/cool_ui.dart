@@ -11,13 +11,13 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/rendering.dart';
 
-part './utils/widget_util.dart';
+part 'utils/widget_util.dart';
 
-part './utils/screen_util.dart';
+part 'utils/screen_util.dart';
 
-part './utils/scroll_utils.dart';
+part 'utils/scroll_utils.dart';
 
-part './utils/board_util.dart';
+part 'utils/board_util.dart';
 
 part 'mocks/mock_binding.dart';
 
@@ -25,10 +25,14 @@ part 'mocks/mock_binary_messenger.dart';
 
 part 'keyboard_manager.dart';
 
-part 'board/card_number_keyboard.dart';
-
 part 'keyboard_controller.dart';
 
 part 'keyboard_media_query.dart';
 
 part 'keyboard_root.dart';
+
+part 'board/card_number_keyboard.dart';
+
+part 'board/board_card_widget.dart';
+
+part 'board/board_btn_widget.dart';

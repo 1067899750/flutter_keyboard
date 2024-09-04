@@ -5,6 +5,8 @@ import 'package:flutter/services.dart';
 import 'keyboards/cool_ui.dart';
 
 class CustomKeyboardDemo extends StatefulWidget {
+  const CustomKeyboardDemo({super.key});
+
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
@@ -20,7 +22,6 @@ class CustomKeyboardDemoState extends State<CustomKeyboardDemo> {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return KeyboardMediaQuery(child: Builder(builder: (ctx) {
       // CoolKeyboard.init(ctx);
       return Scaffold(

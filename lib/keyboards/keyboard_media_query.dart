@@ -1,5 +1,9 @@
 part of cool_ui;
 
+///
+/// 用于注册键监听系统键盘
+/// 放在需要用自定义键盘 widget 中
+///
 class KeyboardMediaQuery extends StatefulWidget {
   final Widget child;
 
@@ -35,7 +39,7 @@ class KeyboardMediaQueryState extends State<KeyboardMediaQuery> {
         child: widget.child);
   }
 
-  onUpdateHeight() {
+  void onUpdateHeight() {
     SchedulerBinding.instance.addPostFrameCallback((_) {
       setState(() => {});
       SchedulerBinding.instance.addPostFrameCallback((_) {

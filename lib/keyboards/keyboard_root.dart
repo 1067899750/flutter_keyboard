@@ -1,5 +1,9 @@
 part of cool_ui;
 
+///
+/// 用于注册键监听系统键盘
+/// 放在 main 中  main()  方法中
+///
 class KeyboardRootWidget extends StatefulWidget {
   final Widget child;
 
@@ -50,12 +54,12 @@ class KeyboardRootState extends State<KeyboardRootWidget> {
     }));
   }
 
-  setKeyboard(WidgetBuilder keyboardBuilder) {
+  void setKeyboard(WidgetBuilder keyboardBuilder) {
     _keyboardBuilder = keyboardBuilder;
     setState(() {});
   }
 
-  clearKeyboard() {
+  void clearKeyboard() {
     if (_keyboardBuilder != null) {
       _keyboardBuilder = null;
       setState(() {});

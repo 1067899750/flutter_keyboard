@@ -4,6 +4,11 @@ typedef GetKeyboardHeight = double Function(BuildContext context);
 typedef KeyboardBuilder = Widget Function(
     BuildContext context, KeyboardController controller, String? param);
 
+///
+///
+/// 用于监听键盘事件
+///
+///
 class CoolKeyboard {
   static JSONMethodCodec codec = const JSONMethodCodec();
   static KeyboardConfig? _currentKeyboard;
@@ -27,7 +32,7 @@ class CoolKeyboard {
     interceptorInput();
   }
 
-  static interceptorInput() {
+  static void interceptorInput() {
     if (isInterceptor) return;
     if (ServicesBinding.instance is! MockBinding) {
       throw Exception('CoolKeyboard can only be used in MockBinding');
@@ -60,7 +65,7 @@ class CoolKeyboard {
       case 'TextInput.hide':
         if (_currentKeyboard != null) {
           clearTask ??= Timer(const Duration(milliseconds: 16),
-                () => hideKeyboard(animation: true));
+              () => hideKeyboard(animation: true));
           return codec.encodeSuccessEnvelope(null);
         } else {
           if (data != null) {
@@ -124,6 +129,9 @@ class CoolKeyboard {
     return null;
   }
 
+  ///
+  /// 更新编辑状态
+  ///
   static void _updateEditingState() {
     var callbackMethodCall = MethodCall("TextInputClient.updateEditingState", [
       _keyboardController!.client.connectionId,
@@ -154,11 +162,17 @@ class CoolKeyboard {
     return completer.future;
   }
 
-  static addKeyboard(CKTextInputType inputType, KeyboardConfig config) {
+  ///
+  /// 添加自定义键盘事件
+  ///
+  static void addKeyboard(CKTextInputType inputType, KeyboardConfig config) {
     _keyboards[inputType] = config;
   }
 
-  static openKeyboard() {
+  ///
+  /// 打开键盘
+  ///
+  static void openKeyboard() {
     var keyboardHeight = _currentKeyboard!.getHeight(_context!);
     _keyboardHeightNotifier.value = keyboardHeight;
     if (_root!.hasKeyboard && _pageKey != null) return;
@@ -190,13 +204,17 @@ class CoolKeyboard {
       }
     });
 
+    // 监听物理返回键
     BackButtonInterceptor.add((_, __) {
       CoolKeyboard.sendPerformAction(TextInputAction.done);
       return true;
     }, zIndex: 1, name: 'CustomKeyboard');
   }
 
-  static hideKeyboard({bool animation = true}) {
+  ///
+  /// 隐藏键盘
+  ///
+  static void hideKeyboard({bool animation = true}) {
     if (clearTask != null) {
       if (clearTask!.isActive) {
         clearTask!.cancel();
@@ -234,7 +252,10 @@ class CoolKeyboard {
     } catch (_) {}
   }
 
-  static clearKeyboard() {
+  ///
+  /// 键盘
+  ///
+  static void clearKeyboard() {
     _currentKeyboard = null;
     if (_keyboardController != null) {
       _keyboardController!.dispose();
@@ -242,16 +263,20 @@ class CoolKeyboard {
     }
   }
 
-  static sendPerformAction(TextInputAction action) {
+  static void sendPerformAction(TextInputAction action) {
     var callbackMethodCall = MethodCall("TextInputClient.performAction",
         [_keyboardController!.client.connectionId, action.toString()]);
+
     WidgetsBinding.instance.defaultBinaryMessenger.handlePlatformMessage(
         "flutter/textinput",
         codec.encodeMethodCall(callbackMethodCall),
         (data) {});
   }
 
-  static updateKeyboardHeight() {
+  ///
+  /// 更新键盘高度
+  ///
+  static void updateKeyboardHeight() {
     if (_pageKey != null &&
         _pageKey!.currentState != null &&
         clearTask == null) {
@@ -462,17 +487,24 @@ class KeyboardPageState extends State<KeyboardPage> {
     super.dispose();
   }
 
-  exitKeyboard() {
+  ///
+  /// 退出键盘
+  ///
+  void exitKeyboard() {
     isClose = true;
   }
 
-  update() {
+  void update() {
+    // 当前帧渲染完成后执行一个回调函数
     WidgetsBinding.instance.addPostFrameCallback((_) {
       setState(() => {});
     });
   }
 
-  updateHeight(double height) {
+  ///
+  /// 更新键盘高度
+  ///
+  void updateHeight(double height) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _height = height;
       setState(() => {});

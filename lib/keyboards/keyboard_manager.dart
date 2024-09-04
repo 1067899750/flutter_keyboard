@@ -48,8 +48,9 @@ class CoolKeyboard {
   static Future<ByteData?> _textInputHanlde(ByteData? data) async {
     var methodCall = codec.decodeMethodCall(data);
     switch (methodCall.method) {
-      case 'TextInput.show':
+      case 'TextInput.show': //打开键盘
         if (_currentKeyboard != null) {
+          // 自定义键盘
           if (clearTask != null) {
             clearTask!.cancel();
             clearTask = null;
@@ -57,12 +58,13 @@ class CoolKeyboard {
           openKeyboard();
           return codec.encodeSuccessEnvelope(null);
         } else {
+          // 系统键盘
           if (data != null) {
             return await _sendPlatformMessage("flutter/textinput", data);
           }
         }
         break;
-      case 'TextInput.hide':
+      case 'TextInput.hide': // 隐藏键盘
         if (_currentKeyboard != null) {
           clearTask ??= Timer(const Duration(milliseconds: 16),
               () => hideKeyboard(animation: true));
@@ -73,14 +75,14 @@ class CoolKeyboard {
           }
         }
         break;
-      case 'TextInput.setEditingState':
+      case 'TextInput.setEditingState': //编辑状态
         var editingState = TextEditingValue.fromJSON(methodCall.arguments);
         if (_keyboardController != null) {
           _keyboardController!.value = editingState;
           return codec.encodeSuccessEnvelope(null);
         }
         break;
-      case 'TextInput.clearClient':
+      case 'TextInput.clearClient': // 清除键盘
         var isShow = _currentKeyboard != null;
         clearTask ??= Timer(const Duration(milliseconds: 16),
             () => hideKeyboard(animation: true));
@@ -121,6 +123,8 @@ class CoolKeyboard {
         }
       // break;
     }
+
+    // 如果前面都没有拦截走系统事件
     if (data != null) {
       ByteData? response =
           await _sendPlatformMessage("flutter/textinput", data);

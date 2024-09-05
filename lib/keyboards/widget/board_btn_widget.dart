@@ -2,7 +2,7 @@ part of cool_ui;
 
 ///
 ///
-/// 按键
+/// 按键 widget
 ///
 ///
 class BoardBtnWidget extends StatefulWidget {
@@ -19,6 +19,12 @@ class BoardBtnWidget extends StatefulWidget {
   /// 按键类型
   final BtnType btnType;
 
+  ///按键字体背景颜色
+  final Color? keyBgColor;
+
+  ///按键回调
+  final Function? callBack;
+
   const BoardBtnWidget({
     super.key,
     required this.width,
@@ -26,7 +32,9 @@ class BoardBtnWidget extends StatefulWidget {
     required this.title,
     this.value,
     required this.controller,
-    required this.btnType,
+    this.btnType = BtnType.UNDEFINE,
+    this.callBack,
+    this.keyBgColor,
   });
 
   @override
@@ -49,7 +57,7 @@ class _BoardBtnWidgetState extends State<BoardBtnWidget> {
       width: widget.width,
       height: widget.height,
       decoration: BoxDecoration(
-        color: Color(color),
+        color: widget.keyBgColor ?? Color(color),
         borderRadius: BorderRadius.circular(5.0),
       ),
       child: GestureDetector(
@@ -64,7 +72,10 @@ class _BoardBtnWidgetState extends State<BoardBtnWidget> {
           ),
         ),
         onTapDown: (TapDownDetails details) {
+          this.widget.callBack?.call();
           switch (widget.btnType) {
+            case BtnType.UNDEFINE:
+              break;
             case BtnType.numAndWordType:
               widget.controller.addText(widget.value ?? widget.title);
               break;
@@ -93,6 +104,8 @@ class _BoardBtnWidgetState extends State<BoardBtnWidget> {
 ///
 ///
 enum BtnType {
+  // 为定义类型
+  UNDEFINE,
   // 清除按键
   clearType,
   // 数字和字母按键

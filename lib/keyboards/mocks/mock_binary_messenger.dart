@@ -47,10 +47,10 @@ class MockBinaryMessenger extends BinaryMessenger {
       _inboundHandlers.remove(channel);
       mockBinding._superDefaultBinaryMessenger.setMessageHandler(channel, null);
     } else {
-      _inboundHandlers[channel] =
-          handler; // used to handle fake messages sent via handlePlatformMessage
-      mockBinding._superDefaultBinaryMessenger.setMessageHandler(
-          channel, handler); // used to handle real messages from the engine
+      // used to handle fake messages sent via handlePlatformMessage
+      _inboundHandlers[channel] = handler;
+      // used to handle real messages from the engine
+      mockBinding._superDefaultBinaryMessenger.setMessageHandler(channel, handler);
     }
   }
 

@@ -76,8 +76,10 @@ class MockBinaryMessenger extends BinaryMessenger {
     final Future<ByteData?>? resultFuture;
     final MessageHandler? handler = _outboundHandlers[channel];
     if (handler != null) {
+      // 执行自定义消息
       resultFuture = handler(message);
     } else {
+      // 处理系统消息
       resultFuture =
           mockBinding._superDefaultBinaryMessenger.send(channel, message);
     }

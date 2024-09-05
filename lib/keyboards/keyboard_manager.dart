@@ -12,7 +12,10 @@ typedef KeyboardBuilder = Widget Function(
 class CoolKeyboard {
   static JSONMethodCodec codec = const JSONMethodCodec();
   static KeyboardConfig? _currentKeyboard;
+
+  // 用于保存自定义键盘的配置
   static final Map<CKTextInputType, KeyboardConfig> _keyboards = {};
+  // flutter 根试图
   static KeyboardRootState? _root;
   static BuildContext? _context;
   static KeyboardController? _keyboardController;
@@ -32,20 +35,24 @@ class CoolKeyboard {
     interceptorInput();
   }
 
+  ///
+  /// 注册监听事件
+  ///
   static void interceptorInput() {
     if (isInterceptor) return;
     if (ServicesBinding.instance is! MockBinding) {
       throw Exception('CoolKeyboard can only be used in MockBinding');
     }
     var mockBinding = ServicesBinding.instance as MockBinding;
-    var mockBinaryMessenger =
-        mockBinding.defaultBinaryMessenger as MockBinaryMessenger;
-    mockBinaryMessenger.setMockMessageHandler(
-        "flutter/textinput", _textInputHanlde);
+    var mockBinaryMessenger = mockBinding.defaultBinaryMessenger;
+    if (mockBinaryMessenger is MockBinaryMessenger) {
+      mockBinaryMessenger.setMockMessageHandler(
+          "flutter/textinput", _textInputHandler);
+    }
     isInterceptor = true;
   }
 
-  static Future<ByteData?> _textInputHanlde(ByteData? data) async {
+  static Future<ByteData?> _textInputHandler(ByteData? data) async {
     var methodCall = codec.decodeMethodCall(data);
     switch (methodCall.method) {
       case 'TextInput.show': //打开键盘
@@ -55,6 +62,7 @@ class CoolKeyboard {
             clearTask!.cancel();
             clearTask = null;
           }
+          // 打开键盘
           openKeyboard();
           return codec.encodeSuccessEnvelope(null);
         } else {
@@ -188,6 +196,7 @@ class CoolKeyboard {
 
     var tempKey = _pageKey;
     var isUpdate = false;
+    // 在根试图中设置键盘 widget
     _root!.setKeyboard((ctx) {
       if (_currentKeyboard != null && _keyboardHeightNotifier.value != 0) {
         if (!isUpdate) {
@@ -240,9 +249,11 @@ class CoolKeyboard {
       if (animation) {
         _pageKey!.currentState?.exitKeyboard();
         Future.delayed(const Duration(milliseconds: 116)).then((_) {
+          // 在根试图中清除键盘 widget
           _root!.clearKeyboard();
         });
       } else {
+        // 在根试图中清除键盘 widget
         _root!.clearKeyboard();
       }
     }
@@ -257,7 +268,7 @@ class CoolKeyboard {
   }
 
   ///
-  /// 键盘
+  /// 清除键盘设置
   ///
   static void clearKeyboard() {
     _currentKeyboard = null;
@@ -289,8 +300,13 @@ class CoolKeyboard {
   }
 }
 
+///
+/// 保存键盘的配置（键盘 widget 和 键盘高度）
+///
 class KeyboardConfig {
   final KeyboardBuilder builder;
+
+  // 键盘高度
   final GetKeyboardHeight getHeight;
 
   const KeyboardConfig({required this.builder, required this.getHeight});
@@ -427,8 +443,12 @@ class CKTextInputType extends TextInputType {
   }
 }
 
+///
+/// 键盘 widget
+///
 class KeyboardPage extends StatefulWidget {
   final Widget? Function(BuildContext context) builder;
+  // 键盘高度
   final double height;
 
   const KeyboardPage({required this.builder, this.height = 0, Key? key})
@@ -498,6 +518,9 @@ class KeyboardPageState extends State<KeyboardPage> {
     isClose = true;
   }
 
+  ///
+  /// 跟新键盘
+  ///
   void update() {
     // 当前帧渲染完成后执行一个回调函数
     WidgetsBinding.instance.addPostFrameCallback((_) {

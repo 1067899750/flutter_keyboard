@@ -15,6 +15,9 @@ class MockBinaryMessenger extends BinaryMessenger {
   final Map<String, MessageHandler> _inboundHandlers =
       <String, MessageHandler>{};
 
+  ///
+  /// 处理来自平台的消息
+  ///
   @override
   Future<ByteData?> handlePlatformMessage(
     String channel,
@@ -35,6 +38,9 @@ class MockBinaryMessenger extends BinaryMessenger {
     return result;
   }
 
+  ///
+  ///  设置处理平台消息的逻辑
+  ///
   @override
   void setMessageHandler(String channel, MessageHandler? handler) {
     if (handler == null) {
@@ -62,6 +68,9 @@ class MockBinaryMessenger extends BinaryMessenger {
   // can implement the [checkMockMessageHandler] method.
   final Map<String, Object> _outboundHandlerIdentities = <String, Object>{};
 
+  ///
+  /// 实现消息发送逻辑
+  ///
   @override
   Future<ByteData?>? send(String channel, ByteData? message) {
     final Future<ByteData?>? resultFuture;
@@ -128,6 +137,9 @@ class MockBinaryMessenger extends BinaryMessenger {
   ///
   ///  * [setMockMethodCallHandler], which wraps this method but decodes
   ///    the messages using a [MethodCodec].
+  ///
+  /// 只要用于把消息加入队列中
+  ///
   void setMockMessageHandler(String channel, MessageHandler? handler,
       [Object? identity]) {
     if (handler == null) {

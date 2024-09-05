@@ -16,12 +16,18 @@ class KeyboardRootWidget extends StatefulWidget {
 
   @override
   State<StatefulWidget> createState() {
-    // TODO: implement createState
     return KeyboardRootState();
   }
 }
 
+///
+/// 承装键盘试图的 widget
+///
 class KeyboardRootState extends State<KeyboardRootWidget> {
+
+  KeyboardRootState({Key? key});
+
+  // 键盘构建试图
   WidgetBuilder? _keyboardBuilder;
 
   bool get hasKeyboard => _keyboardBuilder != null;
@@ -36,11 +42,15 @@ class KeyboardRootState extends State<KeyboardRootWidget> {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
+    // 用于这里控制 flutter 界面里面所有有关的键盘事件
     return KeyboardMediaQuery(child: Builder(builder: (context) {
+      // 初始化监听键盘事件
       CoolKeyboard.init(this, context);
 
+      // flutter UI 试图
       List<Widget> children = [widget.child];
+
+      // 键盘 widget
       if (_keyboardBuilder != null) {
         children.add(Builder(
           builder: _keyboardBuilder!,
@@ -54,11 +64,17 @@ class KeyboardRootState extends State<KeyboardRootWidget> {
     }));
   }
 
+  ///
+  /// 显示键盘
+  ///
   void setKeyboard(WidgetBuilder keyboardBuilder) {
     _keyboardBuilder = keyboardBuilder;
     setState(() {});
   }
 
+  ///
+  /// 隐藏键盘
+  ///
   void clearKeyboard() {
     if (_keyboardBuilder != null) {
       _keyboardBuilder = null;

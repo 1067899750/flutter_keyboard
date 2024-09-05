@@ -6,19 +6,32 @@ part of cool_ui;
 ///
 ///
 class BoardTypeUtil {
-  // 生份证键盘
+  ///
+  /// 生份证键盘
+  ///
   static CKTextInputType cardNumberType =
       const CKTextInputType(name: 'CardNumberKeyboard');
 
-  // 手机号键盘
+  ///
+  /// 手机号键盘
+  ///
   static CKTextInputType phoneType =
       const CKTextInputType(name: 'PhoneKeyboard');
 
-  // 获取所有键盘类型
+  ///
+  /// 数字键盘
+  ///
+  static CKTextInputType numberType =
+      const CKTextInputType(name: 'NumberKeyboard');
+
+  ///
+  ///获取所有键盘类型
+  ///
   static Map<BoardType, CKTextInputType> getAllBoardType() {
     return {
       BoardType.cardNumberType: cardNumberType,
       BoardType.phoneType: phoneType,
+      BoardType.numberType: numberType,
     };
   }
 }
@@ -43,6 +56,8 @@ class BoardUtil {
                   return CardNumberKeyboard(controller: controller);
                 case BoardType.phoneType:
                   return PhoneKeyboard(controller: controller);
+                case BoardType.numberType:
+                  return NumberKeyboard(controller: controller);
                 case BoardType.otherType:
                   return CardNumberKeyboard(controller: controller);
               }
@@ -63,6 +78,8 @@ enum BoardType {
   cardNumberType,
   // 电话
   phoneType,
+  // 数字键盘
+  numberType,
   // 其他
   otherType
 }

@@ -38,3 +38,5 @@ part 'widget/board_card_widget.dart';
 part 'widget/board_btn_widget.dart';
 
 part 'board/phone_keyboard.dart';
+
+part 'board/number_keyboard.dart';

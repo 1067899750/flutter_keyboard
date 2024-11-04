@@ -15,6 +15,7 @@ class CoolKeyboard {
 
   // 用于保存自定义键盘的配置
   static final Map<CKTextInputType, KeyboardConfig> _keyboards = {};
+
   // flutter 根试图
   static KeyboardRootState? _root;
   static BuildContext? _context;
@@ -448,6 +449,7 @@ class CKTextInputType extends TextInputType {
 ///
 class KeyboardPage extends StatefulWidget {
   final Widget? Function(BuildContext context) builder;
+
   // 键盘高度
   final double height;
 
@@ -481,7 +483,7 @@ class KeyboardPageState extends State<KeyboardPage> {
       width: ScreenUtil.getScreenW(context),
       bottom: _height * (isClose ? -1 : 0),
       height: _height,
-      duration: const Duration(milliseconds: 100),
+      duration: const Duration(milliseconds: 185),
       child: IntrinsicHeight(child: Builder(
         builder: (ctx) {
           var result = widget.builder(ctx);
@@ -494,7 +496,10 @@ class KeyboardPageState extends State<KeyboardPage> {
                 minWidth: 0,
                 maxHeight: _height,
                 maxWidth: ScreenUtil.getScreenW(context)),
-            child: _lastBuildWidget,
+            child: FittedBox(
+              fit: BoxFit.none,
+              child: _lastBuildWidget,
+            ),
           );
         },
       )),
